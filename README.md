@@ -1,1 +1,5 @@
-# CSC_Big_Data_in_Machine_Learning
+<div align="center">
+
+  # CSC - Big Data in Machine Learning
+
+</div>
