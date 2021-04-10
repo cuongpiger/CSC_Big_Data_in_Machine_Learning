@@ -1,0 +1,3 @@
+hdfs://bigdata.laptrinhpython.net:19000/t8.shakespeare.txt
+hdfs://bigdata.laptrinhpython.net:19000/people.csv
+hdfs://bigdata.laptrinhpython.net:19000/data.json
