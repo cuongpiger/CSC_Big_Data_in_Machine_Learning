@@ -1,0 +1,1 @@
+hdfs://bigdata.laptrinhpython.net:19000/t8.shakespeare.txt
