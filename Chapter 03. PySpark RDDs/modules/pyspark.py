@@ -124,6 +124,22 @@ class CRDD:
             print('Success.')
         except:
             print('Error!')
+            
+    def sort(self, by='key', ascending=True):
+        if by == 'key':
+            return CRDD(self.rdd.sortByKey(ascending=ascending))
+        
+    def count(self, by='key'):
+        if by == 'key':
+            return self.rdd.countByKey()
+        
+    def group(self, by='key'):
+        if by == 'key':
+            return CRDD(self.rdd.groupByKey())
+        
+    def reduce(self, def_: Callable, by='key'):
+        if by == 'key':
+            return CRDD(self.rdd.reduceByKey(def_))
 
 class CPySpark:
     def __init__(self, app_name: str = None):
