@@ -21,6 +21,14 @@ class CRDD:
     def __len__(self):
         # return len(self.rdd.collect())
         return self.rdd.count()
+    
+    def getFirst(self) -> list:
+        """ Lấy ra record đầu tiên từ `self.rdd`
+
+        Returns:
+            (list): record đầu tiên của `self.rdd`
+        """
+        return self.rdd.first()
 
     def getHead(self, amount: int = 5) -> List[str]:
         """ Lấy ra `amount` record đầu tiên của `self.rdd`
@@ -35,6 +43,9 @@ class CRDD:
     
     def filter(self, def_: Callable):
         return CRDD(self.rdd.filter(def_))
+    
+    def map(self, def_: Callable):
+        return CRDD(self.rdd.map(def_))
     
     def toNdarray(self):
         """ Chuyển đổi `self.rdd` thành ndarray
@@ -56,7 +67,63 @@ class CRDD:
             [type]: [description]
         """
         return CRDD(self.rdd.sample(duplicate, fraction, seed))
+    
+    def subtract(self, other: 'CRDD'):
+        """ Lấy ra phần (self.rdd - (self.rdd [intersection] other.rdd))
+
+        Args:
+            other (CRDD): một CRDD khác
+
+        Returns:
+            (CRDD): CRDD mới
+        """
+        return CRDD(self.rdd.subtract(other.rdd))
+    
+    def unique(self):
+        """ Lấy ra các record duy nhất
+
+        Returns:
+            CRDD: 
+        """
+        return CRDD(self.rdd.distinct())
+    
+    def merge(self, other: 'CRDD', how: str = 'cross'):
+        """ Hàm kết hợp hai rdd
+
+        Args:
+            other (CRDD): một rdd khác
+            how (str, optional):
+                * `cross`: lấy từng record của `self` kết hợp vs từng record của `other`
+
+        Returns:
+            CRDD:
+        """
+        if how == 'cross':
+            return CRDD(self.rdd.cartesian(other.rdd))
         
+    def getAmountPartitions(self) -> int:
+        """ Lấy ra số lượng partition mà rdd này tạo ra
+
+        Returns:
+            (int): số lượng partition của self.rdd
+        """
+        return self.rdd.getNumPartitions()
+    
+    def save(self, path: str, how='text'):
+        """ Dùng để lưu rdd ra các dạng thư mục chứa các file
+
+        Args:
+            path (str): đường dẫn đến thư mục cần lưu thư mục file
+            how (str, optional):
+                * `text`: lưu dưới dạng text file
+        """
+        try:
+            if how == 'text':
+                self.rdd.saveAsTextFile(path)
+        
+            print('Success.')
+        except:
+            print('Error!')
 
 class CPySpark:
     def __init__(self, app_name: str = None):
