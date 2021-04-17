@@ -1,9 +1,12 @@
 import pyspark
 import numpy as np
 from pyspark import SparkContext
+from pyspark.sql import SparkSession, Row
 from time import time
 
 from typing import List, Callable, List
+
+from pyspark.sql.context import SQLContext
 
 
 def measureRun(function):
@@ -142,19 +145,54 @@ class CRDD:
             return CRDD(self.rdd.reduceByKey(def_))
 
 class CPySpark:
-    def __init__(self, app_name: str = None):
-        self.sc = SparkContext(master='local', appName=app_name)
+    def __init__(self, app_name: str = None, session=False, sql=False):
+        self.context = SparkContext(master='local', appName=app_name)
+        self.session = None
+        self.sql = None
+        
+        if session:
+            self.session = SparkSession(self.context)
+            
+        if sql:
+            self.sql = SQLContext(self.context)
 
     def rdd(self, data: np.ndarray = None, file: str = None, min_partitions: int = None, cache=False) -> CRDD(pyspark.RDD):
         res: pyspark.RDD = None
 
         if data is not None:
-            res = self.sc.parallelize(data)
+            res = self.context.parallelize(data)
 
         if file is not None:
-            res = self.sc.textFile(file, minPartitions=min_partitions)
+            res = self.context.textFile(file, minPartitions=min_partitions)
 
         if cache:
             res = res.cache()
 
         return CRDD(res)
+    
+    def dataframe(self, crdd: 'CRDD'):
+        return CSparkFrame(self.sql.createDataFrame(crdd.rdd))
+    
+    def read(self, file_name: str, option='csv'):
+        if option == 'csv':
+            return CSparkFrame(self.session.read.csv(file_name, inferSchema=True, header=True))
+        
+        if option == 'json':
+            return CSparkFrame(self.session.read.json(file_name))
+            
+
+class CSparkFrame:
+    def __init__(self, dataframe: pyspark.sql.dataframe):
+        self.dataframe = dataframe
+        
+    def __len__(self):
+        return self.dataframe.count()
+    
+    def __call__(self):
+        return self.dataframe
+        
+    def getHead(self, amount: int = 5):
+        return self.dataframe.show(amount)
+    
+    def schema(self):
+        return self.dataframe.printSchema()
