@@ -1,0 +1,32 @@
+from pyspark import SparkContext
+from pyspark.conf import SparkConf
+from pyspark.sql import SparkSession
+import matplotlib.pyplot as plt
+import seaborn as sns
+from pyspark.sql.functions import mean, stddev, col, log
+from pyspark.sql.functions import to_date, dayofweek, to_timestamp
+from pyspark.sql import types 
+from pyspark.sql.functions import col, udf
+from datetime import datetime
+from pyspark.sql.types import DateType
+from pyspark.sql.functions import year, month
+from pyspark.sql.functions import dayofmonth, weekofyear
+from pyspark.sql.functions import split, explode
+from pyspark.sql.functions import coalesce, first, lit
+from pyspark.ml.feature import Binarizer
+from pyspark.ml.feature import Bucketizer
+from pyspark.ml.feature import OneHotEncoder, StringIndexer
+from pyspark.sql.functions import regexp_extract, col
+
+df = spark.read.csv(path + "2017_StPaul_MN_Real_Estate.csv", header=True, inferSchema=True)
+
+df_sub = df.select('STREETNUMBERNUMERIC', 'FIREPLACES', 
+                   'LOTSIZEDIMENSIONS', 'LISTTYPE', 'ACRES', 
+                   'ASSUMABLEMORTGAGE', 'SalesClosePrice', 'ListPrice',
+                   'DAYSONMARKET')
+df_sub.show(5)
+
+
+# Convert to date type
+func =  udf (lambda x: datetime.strptime(x, '%m/%d/%Y %H:%M'), DateType())
+
