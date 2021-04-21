@@ -193,6 +193,12 @@ class CSparkFrame:
 
     def __call__(self):
         return self.dataframe
+    
+    def __getitem__(self, columns: List[str]):
+        if type(columns) == str:
+            columns = [columns]
+        
+        return CSparkFrame(self.dataframe.select(*columns))
 
     def getHead(self, amount: int = None):
         # get all
@@ -201,8 +207,21 @@ class CSparkFrame:
 
         return self.dataframe.show(amount)
     
-    def describe(self):
-        return self.dataframe.describe().toPandas()
+    def describe(self, columns: List[str] = None):
+        if columns is None:
+            return self.dataframe.describe().toPandas()
+        else:
+            return self.dataframe.describe(*columns).toPandas()
 
     def schema(self):
         return self.dataframe.printSchema()
+    
+    def crosstab(self, columns: List[str] = None):
+        if columns is None:
+            return None
+        else:
+            return self.dataframe.crosstab(*columns).toPandas()
+        
+    def unique(self):
+        return CSparkFrame(self.dataframe.distinct())
+    
