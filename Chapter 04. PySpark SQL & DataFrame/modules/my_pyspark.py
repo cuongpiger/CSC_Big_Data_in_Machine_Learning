@@ -28,3 +28,6 @@ class MyPySpark:
     def sqlQuery(self, query: str):
         if 'select' in query or 'SELECT' in query:
             return self.sql.sql(query)
+        
+    def dataframe(self, db_name: str):
+        return self.session.table(db_name)
