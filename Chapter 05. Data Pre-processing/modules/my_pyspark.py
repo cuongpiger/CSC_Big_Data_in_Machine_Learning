@@ -25,6 +25,9 @@ class MyPySpark:
         if option == 'json':
             return self.session.read.json(file_path)
         
+        if option == 'parquet':
+            return self.session.read.parquet(file_path)
+        
     def sqlQuery(self, query: str):
         if 'select' in query or 'SELECT' in query:
             return self.sql.sql(query)
