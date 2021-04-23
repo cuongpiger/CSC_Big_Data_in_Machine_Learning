@@ -1,0 +1,14 @@
+from pyspark.ml.linalg import Vectors
+from pyspark.ml.feature import VectorAssembler
+from pyspark.ml.regression import LinearRegression
+from pyspark.ml.classification import LogisticRegression
+from pyspark.sql.functions import corr
+from pyspark.ml.feature import StringIndexer
+from pyspark.ml.feature import OneHotEncoder
+from pyspark.ml import Pipeline
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+
+# link: https://spark.apache.org/docs/latest/api/python/pyspark.ml.html#pyspark.ml.evaluation.MultilabelClassificationEvaluator
+# link: 
+https://spark.apache.org/docs/2.0.2/api/python/pyspark.ml.html#pyspark.ml.evaluation.BinaryClassificationEvaluator
+#link: https://www.linkedin.com/pulse/lets-evaluate-classification-model-roc-pr-curves-suravi-mahanta/
