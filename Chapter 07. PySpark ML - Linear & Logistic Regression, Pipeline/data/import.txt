@@ -1,0 +1,28 @@
+import findspark
+findspark.init()
+
+from pyspark import SparkContext
+from pyspark.conf import SparkConf
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName('tree_demo').getOrCreate()
+
+
+from pyspark.ml.linalg import Vectors
+from pyspark.ml.feature import VectorAssembler
+from pyspark.ml.regression import LinearRegression
+from pyspark.ml.classification import LogisticRegression
+from pyspark.sql.functions import corr
+from pyspark.ml.feature import StringIndexer
+from pyspark.ml.feature import OneHotEncoder
+from pyspark.ml import Pipeline
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+from pyspark.ml.classification import DecisionTreeClassifier
+from pyspark.ml.classification import DecisionTreeClassificationModel
+from pyspark.ml.classification import RandomForestClassifier
+from pyspark.ml.classification import RandomForestClassificationModel
+from pyspark.ml.classification import GBTClassifier
+from pyspark.ml.classification import GBTClassificationModel
+
+
