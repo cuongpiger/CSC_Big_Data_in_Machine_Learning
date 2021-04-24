@@ -78,3 +78,13 @@ class MyDrawer:
         plt.axis('off')
 
         plt.show()
+        
+        
+    def horbar(self, data: pd.DataFrame, x_label: str, y_label: str, title="", figsize: Tuple[int, int]=None):
+        plt.figure(figsize=figsize)
+        sns.barplot(data=data, x=x_label, y=y_label)
+        plt.xlabel(x_label, color='b', weight='bold')
+        plt.ylabel(y_label, color='b', weight='bold')
+        plt.title(title, fontsize=18, color='r', weight='bold')
+        plt.show()
+        

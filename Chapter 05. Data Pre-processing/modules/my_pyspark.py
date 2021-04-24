@@ -2,6 +2,7 @@ import pyspark
 from pyspark import SparkContext
 from pyspark.sql.session import SparkSession
 from pyspark.sql.context import SQLContext
+from pyspark.sql.functions import col, count, isnan, when
 
 from typing import List
 
@@ -34,3 +35,15 @@ class MyPySpark:
         
     def dataframe(self, db_name: str):
         return self.session.table(db_name)
+    
+
+
+pyspark_dataframe = pyspark.sql.dataframe.DataFrame    
+def checkNaNValues(data: pyspark_dataframe):
+    mask = [count(when(isnan(c), c)).alias(c) for c in data.columns]
+    return data.select(mask).toPandas()
+    
+
+def checkNullValues(data: pyspark_dataframe):
+    mask = [count(when(col(c).isNull(), c)).alias(c) for c in data.columns]
+    return data.select(mask).toPandas()
