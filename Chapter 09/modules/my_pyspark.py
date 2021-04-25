@@ -20,7 +20,7 @@ class MyPySpark:
             
     def readFile(self, file_path: str, option='csv'):
         if option == 'csv':
-            return self.session.read.csv(file_path, inferSchema=True, header=True)
+            return self.session.read.csv(file_path, inferSchema=True, header=False, sep='\t')
         
         if option == 'json':
             return self.session.read.json(file_path)
