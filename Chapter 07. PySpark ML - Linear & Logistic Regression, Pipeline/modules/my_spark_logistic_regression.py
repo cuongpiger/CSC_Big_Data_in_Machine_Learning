@@ -4,7 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from pyspark.ml.feature import VectorAssembler
-from pyspark.ml.classification import LogisticRegression
+from pyspark.ml.classification import LogisticRegression, LogisticRegressionModel
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator, BinaryClassificationEvaluator
 from typing import List
 
 class MySparkLogisticRegression:
@@ -17,7 +18,6 @@ class MySparkLogisticRegression:
         self.test_data: pyspark.sql.DataFrame = None
         self.model = None
         self.coefficients = None
-        self.intercept = None
         self.vector_assembler = None
         
     def prepareData(self):
@@ -37,5 +37,35 @@ class MySparkLogisticRegression:
         self.train_data, self.test_data = self.df_data.randomSplit((pTrainSize, 1 - pTrainSize))
         
     def buildModel(self):
-        handler = LogisticRegression(featuresCol='features', labelCol=self.target_feature, predictionCol=('predict_' + self.target_feature))
+        handler = LogisticRegression(featuresCol='features', labelCol=self.target_feature, predictionCol='prediction')
         self.model = handler.fit(self.train_data)
+        self.coefficients = self.model.coefficients
+        
+    def evaluateTestData(self):
+        test_predict = self.model.transform(self.test_data)
+        
+        return test_predict.groupBy(self.target_feature, 'prediction').count().show()
+    
+    def evaluate(self):
+        test_predict = self.model.transform(self.test_data)
+        
+        multi_evaluator = MulticlassClassificationEvaluator()
+        weighted_precision = multi_evaluator.evaluate(test_predict, {multi_evaluator.metricName: 'weightedPrecision'})
+        
+        binary_evaluator = BinaryClassificationEvaluator()
+        auc = binary_evaluator.evaluate(test_predict, {binary_evaluator.metricName: "areaUnderROC"})
+        
+        metrics = ['weighted precision', 'area under ROC']
+        values = [weighted_precision, auc]
+        
+        return pd.DataFrame({
+            'metric': metrics,
+            'value': values
+        })
+        
+    def saveModel(self, path: str):
+        self.model.save(path)
+        
+def mySparkLogisticRegressionLoadModel(path: str):
+    return LogisticRegressionModel.load(path)
+        
