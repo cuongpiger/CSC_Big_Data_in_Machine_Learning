@@ -2,7 +2,6 @@ import pyspark
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import pickle
 
 from pyspark.ml.feature import VectorAssembler
 from pyspark.ml.regression import LinearRegression
