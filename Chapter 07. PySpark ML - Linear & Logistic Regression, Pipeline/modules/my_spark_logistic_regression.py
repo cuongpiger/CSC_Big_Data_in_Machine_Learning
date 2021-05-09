@@ -37,6 +37,9 @@ class MySparkLogisticRegression:
         self.train_data, self.test_data = self.df_data.randomSplit((pTrainSize, 1 - pTrainSize))
         
     def buildModel(self):
+        if self.train_data is None:
+            self.train_data = self.df_data
+        
         handler = LogisticRegression(featuresCol='features', labelCol=self.target_feature, predictionCol='prediction')
         self.model = handler.fit(self.train_data)
         self.coefficients = self.model.coefficients
