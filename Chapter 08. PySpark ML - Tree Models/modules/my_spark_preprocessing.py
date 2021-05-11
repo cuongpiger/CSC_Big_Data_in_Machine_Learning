@@ -42,4 +42,7 @@ class MyDataClassifier:
         self.data = self.assembler.transform(self.raw_data).select('features', self.output_var)
         
     def trainTestSplit(self, pTrainSize: float = .75):
-        self.train_data, self.test_data = self.data.randomSplit((pTrainSize, 1 - pTrainSize))
+        if pTrainSize == 1:
+            self.train_data = self.data
+        else:
+            self.train_data, self.test_data = self.data.randomSplit((pTrainSize, 1 - pTrainSize))
