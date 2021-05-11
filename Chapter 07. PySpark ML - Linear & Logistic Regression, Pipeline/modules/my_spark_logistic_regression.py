@@ -69,6 +69,36 @@ class MySparkLogisticRegression:
     def saveModel(self, path: str):
         self.model.save(path)
         
+        
+    def evaluateTrainData(self):
+        lr_summary = self.model.summary
+        
+        accuracy = lr_summary.accuracy
+        au_roc = lr_summary.areaUnderROC
+        recall = lr_summary.weightedRecall
+        precision = lr_summary.weightedPrecision
+        f1_score = 2 * ((precision * recall) / (precision  + recall))
+        
+        metrics = ['Accuracy', 'Area under ROC', 'Presicion', 'Recall', 'F1-Score']
+        values = [accuracy, au_roc, precision, recall, f1_score]
+        ranges = ['[0, 1]', '[0.5, 1]', '[0, 1]', '[0, 1]', '[0, 1]']
+        performances = ['high is better', 'high is better', 'high is better', 'high is better', 'high is better']
+        
+        return pd.DataFrame({
+            'Metric': metrics,
+            'Value': values,
+            'Range': ranges,
+            'Model performance': performances
+        })
+        
+        
+    def predict(self, pPredictedData: pyspark.RDD = None):
+        if pPredictedData is None:
+            return self.model.transform(self.test_data)
+        else:
+            predicted_data = self.vector_assembler.transform(pPredictedData).select('features')
+            return self.model.transform(predicted_data)
+        
 def mySparkLogisticRegressionLoadModel(path: str):
     return LogisticRegressionModel.load(path)
         
