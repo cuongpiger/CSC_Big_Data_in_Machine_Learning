@@ -18,9 +18,9 @@ class MyPySpark:
         if sql:
             self.sql = SQLContext(self.context)
 
-    def readFile(self, file_path: str, option='csv'):
+    def readFile(self, file_path: str, option='csv', header=True):
         if option == 'csv':
-            return self.session.read.csv(file_path, inferSchema=True, header=True)
+            return self.session.read.csv(file_path, inferSchema=True, header=header)
 
         if option == 'json':
             return self.session.read.json(file_path)

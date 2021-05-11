@@ -2,6 +2,7 @@ import pyspark
 
 from pyspark.ml.feature import StringIndexer, OneHotEncoder
 from pyspark.ml.feature import VectorAssembler
+from pyspark.sql.functions import col
 from typing import List
 
 def indexerData(pData: pyspark.sql.DataFrame, pInputCols: List[str]):
@@ -20,6 +21,12 @@ def oneHotEncoder(pData: pyspark.sql.DataFrame, pInputCols: List[str]):
 
 def dropNa(pData: pyspark.sql.DataFrame):
     return pData.na.drop()
+
+def casting(pData: pyspark.RDD, pCols: List[str], pType: str):
+    for c in pCols:
+        pData = pData.withColumn(c, col(c).cast(pType))
+        
+    return pData
 
 
 class MyDataClassifier:
