@@ -357,3 +357,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Tweeter token
+Chapter 10. PySpark Streaming/demo/key/
