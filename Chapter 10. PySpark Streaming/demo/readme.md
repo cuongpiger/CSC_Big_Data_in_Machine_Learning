@@ -1,1 +1,1 @@
-Vào [đây](https://github.com/cuongpiger/My_Little_Secret/blob/main/key.zip) tải file `key.zip` về $\Rightarrow$ copy thả vô cùng cấp thư mục với file `readme.md` này $\Rightarrow$ giải nén thế là xong.
+Vào [đây](https://github.com/cuongpiger/My_Little_Secret/blob/main/key.zip) tải file `key.zip` về ![formula](https://render.githubusercontent.com/render/math?math=\Rightarrow) copy thả vô cùng cấp thư mục với file `readme.md` này ![formula](https://render.githubusercontent.com/render/math?math=\Rightarrow) giải nén thế là xong.
