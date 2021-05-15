@@ -14,7 +14,7 @@ def createSparkDfFromXlsx(pDf: pd.DataFrame, pSpark: SparkSession):
 def oversampling(pDf: pyspark.sql.DataFrame, pColumn: str, pMajorValue, pMinorValue):
     major_df = pDf.filter(col(pColumn) == pMajorValue)
     minor_df = pDf.filter(col(pColumn) == pMinorValue)
-    ratio = major_df.count() // minor_df.count()
+    ratio = int(major_df.count() / minor_df.count())
     
     oversampled_df = minor_df.withColumn('dummy', explode(array([lit(x) for x in range(ratio)]))).drop('dummy')
     combined_df = major_df.unionAll(oversampled_df)
