@@ -360,3 +360,12 @@ FodyWeavers.xsd
 
 # Tweeter token
 Chapter 10. PySpark Streaming/demo/key/
+
+LDS9_K265_DuongManhCuong_Cuoi_ky/data/womens-ecommerce-clothing-reviews/womens-ecommerce-clothing-reviews_clean_data.parquet/
+LDS9_K265_DuongManhCuong_Cuoi_ky/data/womens-ecommerce-clothing-reviews/womens-ecommerce-clothing-reviews_resampling.parquet/
+LDS9_K265_DuongManhCuong_Cuoi_ky/data/womens-ecommerce-clothing-reviews/womens-ecommerce-clothing-reviews_test.parquet/
+LDS9_K265_DuongManhCuong_Cuoi_ky/data/womens-ecommerce-clothing-reviews/womens-ecommerce-clothing-reviews_train.parquet/
+LDS9_K265_DuongManhCuong_Cuoi_ky/data/face-and-real-news-dataset/fake_news_clean_data.parquet/
+LDS9_K265_DuongManhCuong_Cuoi_ky/data/face-and-real-news-dataset/real_news_clean_data.parquet/
+LDS9_K265_DuongManhCuong_Cuoi_ky/data/face-and-real-news-dataset/test.parquet/
+LDS9_K265_DuongManhCuong_Cuoi_ky/data/face-and-real-news-dataset/train.parquet/
